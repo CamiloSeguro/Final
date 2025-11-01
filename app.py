@@ -49,7 +49,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 # ---- Footer ----
 st.markdown("""
 <hr style="opacity:.15; margin-top:2rem; margin-bottom:1rem;">
-<div style="text-align:center; opacity:.7; font-size:13px; width:80%;">
+<div style="text-align:center; opacity:.7; font-size:13px; width:70%;">
   Proyecto Final· <b>Universidad EAFIT</b> · <b>Camilo Seguro Carvajal</b>
 </div>
 """, unsafe_allow_html=True)
