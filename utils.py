@@ -30,65 +30,48 @@ def current_broker(): return os.getenv("MQTT_BROKER", "broker.hivemq.com")
 def inject_css(st):
     st.markdown("""
     <style>
-    /* ---- Estructura general ---- */
+    /* ---- Ancho y espaciado ---- */
     .block-container{
-      padding-top: 0.5rem !important;
-      padding-bottom: 1.2rem !important;
-      max-width: 1500px !important;     /* Más ancho y centrado */
+      padding-top: .5rem !important;
+      padding-bottom: 1rem !important;
+      max-width: 1400px !important;      /* ancho cómodo */
       margin: 0 auto !important;
+      overflow: visible !important;       /* <— evita clip */
     }
-    /* Compacta el sidebar */
+    /* evita clip en filas/columnas internas */
+    [data-testid="stHorizontalBlock"],
+    [data-testid="stVerticalBlock"],
+    .stColumn { overflow: visible !important; }
+
+    /* ---- Sidebar ---- */
     section[data-testid="stSidebar"] {
       width: 250px !important;
       background: #0f1624;
       border-right: 1px solid rgba(255,255,255,0.08);
     }
 
-    /* ---- Hero y Cards ---- */
+    /* ---- Hero / Cards ---- */
     .hero{
+      width: 100%;                        /* <— ocupa todo el ancho del contenedor */
+      margin: 0 auto;
       padding:22px 28px; border-radius:18px;
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid rgba(255,255,255,.08);
-      box-shadow: 0 0 25px rgba(0,0,0,.3);
-      transition: all .3s ease-in-out;
+      box-shadow: 0 0 35px rgba(34,197,94,.18);  /* sombra visible */
     }
-    .hero:hover { box-shadow: 0 0 35px rgba(34,197,94,.25); }
-
     .card{
       padding:18px; border-radius:16px;
-      background:#0e1420;
-      border:1px solid rgba(255,255,255,.08);
+      background:#0e1420; border:1px solid rgba(255,255,255,.08);
       box-shadow: 0 0 15px rgba(0,0,0,.25);
     }
-
-    /* ---- Detalles visuales ---- */
-    .pill{ display:inline-flex; gap:8px; align-items:center;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(34,197,94,.12);
-      font-size:13px; font-weight:500;
-    }
+    .pill{ display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08); background:rgba(34,197,94,.12); font-size:13px; }
     .pill.bad{ background:rgba(239,68,68,.15); }
-
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
-    .chip{
-      padding:6px 10px; border-radius:999px;
-      font-size:12px; font-weight:500;
-      background:#0f172a;
-      border:1px solid rgba(255,255,255,.08);
-      cursor:pointer; transition: all .2s ease;
-    }
-    .chip:hover{ background:#1e293b; }
-
-    .primary-btn button{
-      width:100%; padding:10px 14px; font-weight:700;
-      border-radius:10px;
-      background:#22c55e !important;
-      color:white !important;
-      border:none !important;
-    }
+    .primary-btn button{ width:100%; padding:10px 14px; font-weight:700; border-radius:10px;
+      background:#22c55e !important; color:white !important; border:none !important; }
     </style>
     """, unsafe_allow_html=True)
+
 
 def connection_pill(connected: bool, last_ts: float|None):
     if connected:
