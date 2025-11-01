@@ -30,7 +30,13 @@ st.markdown(connection_pill(st.session_state._connected, st.session_state._last)
 col1, col2, col3 = st.columns(3)
 def tile(col, key, title, emoji):
     with col:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
+        def card(html: str):
+    st.markdown(f'<div class="card">{html}</div>', unsafe_allow_html=True)
+
+card("""
+  <h4>🟡 Sala</h4>
+  <p style="opacity:.75;margin:0">Encender/Apagar</p>
+""")
         val = st.toggle(f"{emoji} {title}", value=st.session_state.state[key], key=key)
         st.caption("Encender/Apagar")
         st.markdown('</div>', unsafe_allow_html=True)
