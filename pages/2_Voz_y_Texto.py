@@ -1,12 +1,10 @@
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from mqtt_client import MqttBridge
-from utils import parse_command, inject_style
+from utils import parse_command, inject_css
 
 TOPIC_CMD = "eafit/camilo/smartlight/commands"
-
-bp = st.sidebar.session_state.get("🔷 Blueprint mode", False)
-st.markdown(inject_style(blueprint=bp), unsafe_allow_html=True)
+inject_css(st)
 
 bridge = st.session_state.get("_bridge")
 if bridge is None:
@@ -14,9 +12,9 @@ if bridge is None:
     bridge.connect()
     st.session_state._bridge = bridge
 
-st.markdown("### 🎙️ Voz & Texto")
-
+st.markdown("## 🎙️ Voz & Texto")
 st.markdown('<div class="card">', unsafe_allow_html=True)
+
 result = mic_recorder(
     start_prompt="Di: 'encender sala', 'apagar cocina', 'escena noche'",
     just_once=True, use_container_width=True, key="mic"
@@ -29,17 +27,16 @@ cols = st.columns(4)
 examples = ["encender sala", "apagar cocina", "escena noche", "encender todo"]
 for i, ex in enumerate(examples):
     with cols[i]:
-        if st.button(ex.title(), key=f"chip_{i}"): text = ex
+        if st.button(ex.title(), key=f"chip_{i}"):
+            text = ex
 
 payload = parse_command(text)
 st.write("**Vista previa → payload MQTT**")
-st.code(payload or {"info": "Escribe o usa el micrófono para generar un comando."}, language="json")
+st.code(payload or {"info": "Usa micrófono o escribe un comando."}, language="json")
 
 if st.button("🚀 Enviar"):
     if payload:
-        bridge.publish(TOPIC_CMD, payload)
-        st.success(f"Enviado: {payload}")
+        bridge.publish(TOPIC_CMD, payload); st.success(f"Enviado: {payload}")
     else:
-        st.warning("No entendí el comando. Prueba: 'encender sala' / 'apagar cocina' / 'escena trabajo'")
-
+        st.warning("Prueba: 'encender sala' / 'apagar cocina' / 'escena trabajo'")
 st.markdown('</div>', unsafe_allow_html=True)
