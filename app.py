@@ -16,7 +16,7 @@ st.markdown("""
 }
 .hero-box {
     width: 800px;
-    padding: 28px 32px;
+    padding: 78px 32px;
     border-radius: 18px;
     background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
     border: 1px solid rgba(255,255,255,.10);
