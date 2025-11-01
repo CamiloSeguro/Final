@@ -26,86 +26,28 @@ def parse_command(text: str):
 
 def _norm(room: str): return "habitacion" if room.startswith("habita") else room
 
-# ---------- Brand helpers ----------
 def current_broker(): return os.getenv("MQTT_BROKER", "broker.hivemq.com")
 
-def inject_style(blueprint: bool=False):
-    # colores base y blueprint
-    if blueprint:
-        bg0 = "#030711"
-        bg1 = "#071426"
-        grid = "rgba(80,160,255,.12)"
-        accent = "#60A5FA"   # azul
-        glow = "rgba(96,165,250,.45)"
-    else:
-        bg0 = "#05070B"
-        bg1 = "#0A0F18"
-        grid = "rgba(34,197,94,.12)"
-        accent = "#22C55E"   # verde
-        glow = "rgba(34,197,94,.45)"
-
-    css = f"""
+def inject_css(st):
+    st.markdown("""
     <style>
-    /* ===== Background animado + grid ===== */
-    .appview-container {{
-      background:
-        radial-gradient(1000px 600px at 20% -10%, {glow} 0%, transparent 60%),
-        radial-gradient(800px 500px at 120% 20%, {glow} 0%, transparent 65%),
-        linear-gradient(180deg, {bg0} 0%, {bg1} 100%);
-    }}
-    body::before {{
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
-      background-image:
-        repeating-linear-gradient(0deg, {grid}, {grid} 1px, transparent 1px, transparent 32px),
-        repeating-linear-gradient(90deg, {grid}, {grid} 1px, transparent 1px, transparent 32px);
-      mask: linear-gradient(to bottom, rgba(0,0,0,.8), rgba(0,0,0,.2));
-    }}
-    /* ===== Navbar ===== */
-    .navbar {{
-      display:flex; gap:12px; align-items:center; margin: 6px 0 18px 0;
-    }}
-    .navbtn {{
-      padding:8px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03); color:#E6F6EC; text-decoration:none;
-      transition:.2s; font-weight:600; box-shadow:0 0 0 0 transparent;
-    }}
-    .navbtn:hover {{ transform: translateY(-1px); box-shadow:0 6px 24px {glow}; border-color:{accent}33; }}
-    /* ===== Cards glass ===== */
-    .card {{
-      position:relative; padding:16px; border-radius:18px; overflow:hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border: 1px solid rgba(255,255,255,.08);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 10px 40px rgba(0,0,0,.35);
-    }}
-    .card h4 {{ margin:0 0 8px 0; }}
-    /* ===== Pills ===== */
-    .pill {{ display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
-            border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); font-size:13px; }}
-    .ok {{ background: {accent}22; }}
-    .bad {{ background: #ef444422; }}
-    /* ===== Scene buttons ===== */
-    .scene {{
-      width:100%; padding:14px 16px; border-radius:16px; border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      font-weight:700; cursor:pointer; transition: .15s transform, .3s box-shadow;
-    }}
-    .scene:hover {{ transform: translateY(-2px); box-shadow:0 14px 40px {glow}; }}
-    /* ===== Glow cuando ON ===== */
-    .light-on {{ box-shadow: 0 0 0 0 {glow}, 0 0 32px {glow} inset; }}
-    /* ===== Bulb preview ===== */
-    .bulb {{
-      width:110px; aspect-ratio:1/1; border-radius:999px; margin:auto;
-      background: radial-gradient(circle at 50% 60%, #FFD166 0%, #FDBA74 35%, transparent 65%);
-      filter: drop-shadow(0 0 30px {glow});
-      opacity:.1; transition:.25s;
-    }}
-    .bulb.on {{ opacity: .9; }}
+    .hero { padding:18px 22px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08); }
+    .card { padding:16px; border-radius:14px;
+      background:#0e1420; border:1px solid rgba(255,255,255,.08); }
+    .pill { display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08); background:rgba(34,197,94,.12); font-size:13px; }
+    .pill.bad{ background:rgba(239,68,68,.12); }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{ padding:6px 10px; border-radius:999px; font-size:12px; background:#0f172a;
+      border:1px solid rgba(255,255,255,.08); cursor:pointer; }
+    .primary-btn button{ width:100%; padding:10px 14px; font-weight:700; }
     </style>
-    """
-    return css
+    """, unsafe_allow_html=True)
 
 def connection_pill(connected: bool, last_ts: float|None):
     if connected:
         age = 0 if last_ts is None else int(time.time() - last_ts)
-        return f'<span class="pill ok">🟢 Conectado · {age}s</span>'
+        return f'<span class="pill">🟢 Conectado · {age}s</span>'
     return '<span class="pill bad">🔴 Desconectado</span>'
