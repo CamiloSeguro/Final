@@ -12,7 +12,7 @@ st.markdown("""
     display: flex;
     flex-direction: column;
     justify-content: center;            /* centra vertical */
-    align-items: center;                /* centra horizontal */
+    align-items: flex-start;                 /* centra horizontal */
     margin-left: 200px; 
 }
 .hero-box {
