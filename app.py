@@ -1,36 +1,36 @@
 import streamlit as st
 from utils import inject_css, current_broker
 
+# Configuración base (solo aquí)
 st.set_page_config(page_title="SmartLight", page_icon="💡", layout="wide")
-def inject_css(st):
+
+# Aplicar estilos globales
+inject_css(st)
+
+# --- Hero centrado y limpio ---
+colA, colB, colC = st.columns([1,6,1])  # centrado visual
+with colB:
     st.markdown("""
-    <style>
-    /* ---- Ancho y espaciado global ---- */
-    .block-container{
-      padding-top: 1.2rem !important;
-      padding-bottom: 2rem !important;
-      max-width: 1200px;         /* <— aumenta el ancho útil */
-      margin: 0 auto;
-    }
-    @media (min-width:1600px){
-      .block-container{ max-width: 1400px; }  /* pantallas grandes */
-    }
+    <div class="hero">
+      <h3>💡 SmartLight — Control de luces Multimodal</h3>
+      <ul>
+        <li><b>Control</b>: toggles y <b>escenas</b> (Noche, Trabajo, Todo ON/OFF).</li>
+        <li><b>Voz & Texto</b>: comandos naturales como "encender sala" o "escena noche".</li>
+      </ul>
+      <div style="display:flex; gap:24px; margin-top:8px; flex-wrap:wrap;">
+        <a href="pages/1_Control.py" style="text-decoration:none; font-weight:600;">Ir a Control 💡</a>
+        <a href="pages/2_Voz_y_Texto.py" style="text-decoration:none; font-weight:600;">Ir a Voz & Texto 🎙️</a>
+      </div>
+      <p style="margin-top:10px;">
+        <b>Broker MQTT:</b> <code style="color:#22c55e;">{}</code>
+      </p>
+    </div>
+    """.format(current_broker()), unsafe_allow_html=True)
 
-    /* ---- Estilos UI ---- */
-    .hero{
-      padding:18px 22px; border-radius:16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .card{ padding:16px; border-radius:14px;
-      background:#0e1420; border:1px solid rgba(255,255,255,.08); }
-    .pill{ display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.08); background:rgba(34,197,94,.12); font-size:13px; }
-    .pill.bad{ background:rgba(239,68,68,.12); }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
-    .chip{ padding:6px 10px; border-radius:999px; font-size:12px; background:#0f172a;
-      border:1px solid rgba(255,255,255,.08); cursor:pointer; }
-    .primary-btn button{ width:100%; padding:10px 14px; font-weight:700; }
-    </style>
-    """, unsafe_allow_html=True)
-
+# --- Footer discreto ---
+st.markdown("""
+<hr style="opacity:.15; margin-top:2rem; margin-bottom:1rem;">
+<div style="text-align:center; opacity:.7; font-size:13px;">
+  Proyecto académico · Universidad EAFIT · Desarrollado por <b>Camilo Seguro Carvajal</b>  
+</div>
+""", unsafe_allow_html=True)
