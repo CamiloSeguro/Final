@@ -2,20 +2,35 @@ import streamlit as st
 from utils import inject_css, current_broker
 
 st.set_page_config(page_title="SmartLight", page_icon="💡", layout="wide")
-inject_css(st)
+def inject_css(st):
+    st.markdown("""
+    <style>
+    /* ---- Ancho y espaciado global ---- */
+    .block-container{
+      padding-top: 1.2rem !important;
+      padding-bottom: 2rem !important;
+      max-width: 1200px;         /* <— aumenta el ancho útil */
+      margin: 0 auto;
+    }
+    @media (min-width:1600px){
+      .block-container{ max-width: 1400px; }  /* pantallas grandes */
+    }
 
-hero_html = f"""
-<div class="hero">
-  <h3>💡 SmartLight — Control de luces Multimodal</h3>
-  <ul>
-    <li><b>Control</b>: toggles y <b>escenas</b> (Noche, Trabajo, Todo ON/OFF).</li>
-    <li><b>Voz & Texto</b>: comandos naturales ("encender sala", "escena noche").</li>
-  </ul>
-  <div style="display:flex; gap:24px; margin-top:8px;">
-    <a href="pages/1_Control.py">Ir a Control 💡</a>
-    <a href="pages/2_Voz_y_Texto.py">Ir a Voz & Texto 🎙️</a>
-  </div>
-  <p style="margin-top:8px;">Broker MQTT: <code>{current_broker()}</code></p>
-</div>
-"""
-st.markdown(hero_html, unsafe_allow_html=True)
+    /* ---- Estilos UI ---- */
+    .hero{
+      padding:18px 22px; border-radius:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .card{ padding:16px; border-radius:14px;
+      background:#0e1420; border:1px solid rgba(255,255,255,.08); }
+    .pill{ display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08); background:rgba(34,197,94,.12); font-size:13px; }
+    .pill.bad{ background:rgba(239,68,68,.12); }
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
+    .chip{ padding:6px 10px; border-radius:999px; font-size:12px; background:#0f172a;
+      border:1px solid rgba(255,255,255,.08); cursor:pointer; }
+    .primary-btn button{ width:100%; padding:10px 14px; font-weight:700; }
+    </style>
+    """, unsafe_allow_html=True)
+
