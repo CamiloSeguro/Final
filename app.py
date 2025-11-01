@@ -8,7 +8,7 @@ inject_css(st)
 st.markdown("""
 <style>
 .main-container {
-    height: 85vh;                       /* ocupa el alto de la ventana */
+    height: 8vh;                       /* ocupa el alto de la ventana */
     display: flex;
     flex-direction: column;
     justify-content: center;            /* centra vertical */
