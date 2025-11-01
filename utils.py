@@ -25,24 +25,68 @@ def parse_command(text: str):
     return payload
 
 def _norm(room: str): return "habitacion" if room.startswith("habita") else room
-
 def current_broker(): return os.getenv("MQTT_BROKER", "broker.hivemq.com")
 
 def inject_css(st):
     st.markdown("""
     <style>
-    .hero { padding:18px 22px; border-radius:16px;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08); }
-    .card { padding:16px; border-radius:14px;
-      background:#0e1420; border:1px solid rgba(255,255,255,.08); }
-    .pill { display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.08); background:rgba(34,197,94,.12); font-size:13px; }
-    .pill.bad{ background:rgba(239,68,68,.12); }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap; }
-    .chip{ padding:6px 10px; border-radius:999px; font-size:12px; background:#0f172a;
-      border:1px solid rgba(255,255,255,.08); cursor:pointer; }
-    .primary-btn button{ width:100%; padding:10px 14px; font-weight:700; }
+    /* ---- Estructura general ---- */
+    .block-container{
+      padding-top: 0.5rem !important;
+      padding-bottom: 1.2rem !important;
+      max-width: 1500px !important;     /* Más ancho y centrado */
+      margin: 0 auto !important;
+    }
+    /* Compacta el sidebar */
+    section[data-testid="stSidebar"] {
+      width: 250px !important;
+      background: #0f1624;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ---- Hero y Cards ---- */
+    .hero{
+      padding:22px 28px; border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 0 25px rgba(0,0,0,.3);
+      transition: all .3s ease-in-out;
+    }
+    .hero:hover { box-shadow: 0 0 35px rgba(34,197,94,.25); }
+
+    .card{
+      padding:18px; border-radius:16px;
+      background:#0e1420;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow: 0 0 15px rgba(0,0,0,.25);
+    }
+
+    /* ---- Detalles visuales ---- */
+    .pill{ display:inline-flex; gap:8px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(34,197,94,.12);
+      font-size:13px; font-weight:500;
+    }
+    .pill.bad{ background:rgba(239,68,68,.15); }
+
+    .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
+    .chip{
+      padding:6px 10px; border-radius:999px;
+      font-size:12px; font-weight:500;
+      background:#0f172a;
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer; transition: all .2s ease;
+    }
+    .chip:hover{ background:#1e293b; }
+
+    .primary-btn button{
+      width:100%; padding:10px 14px; font-weight:700;
+      border-radius:10px;
+      background:#22c55e !important;
+      color:white !important;
+      border:none !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
