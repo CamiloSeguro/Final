@@ -13,6 +13,7 @@ st.markdown("""
     flex-direction: column;
     justify-content: center;            /* centra vertical */
     align-items: center;                /* centra horizontal */
+    margin-left: 200px; 
 }
 .hero-box {
     width: 800px;
