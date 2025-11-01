@@ -6,11 +6,10 @@ from utils import SCENES, inject_css, connection_pill
 TOPIC_CMD = "eafit/camilo/smartlight/commands"
 TOPIC_STATE = "eafit/camilo/smartlight/state"
 
-# --- Estilo global ---
+# Estilo (después de cualquier set_page_config que está en app.py)
 inject_css(st)
-st.set_page_config(page_title="SmartLight - Control", page_icon="💡", layout="wide")
 
-# --- Estado inicial ---
+# Estado inicial
 if "state" not in st.session_state:
     st.session_state.state = {"sala": False, "cocina": False, "habitacion": False}
 if "_connected" not in st.session_state:
@@ -18,7 +17,7 @@ if "_connected" not in st.session_state:
 if "_last" not in st.session_state:
     st.session_state._last = None
 
-# --- Conexión MQTT ---
+# Conexión MQTT
 bridge = st.session_state.get("_bridge")
 if bridge is None:
     bridge = MqttBridge(client_id="smartlight_ui")
@@ -35,17 +34,16 @@ if bridge is None:
 
     bridge.subscribe(TOPIC_STATE, on_state)
 
-# --- Header ---
+# UI
 st.title("💡 Control de Luces")
 st.markdown(connection_pill(
     st.session_state._connected,
     st.session_state._last
 ), unsafe_allow_html=True)
 
-# --- Controles principales ---
 st.write("### Habitaciones")
-
 col1, col2, col3 = st.columns(3)
+
 with col1:
     with st.container(border=True):
         st.subheader("🟡 Sala")
@@ -64,35 +62,29 @@ with col3:
         st.caption("Control de la luz de habitación")
         habitacion = st.toggle("Encendida", value=st.session_state.state["habitacion"], key="habitacion")
 
-# --- Botón principal ---
 st.divider()
 st.button(
     "🚀 Enviar estado",
     type="primary",
     use_container_width=True,
     on_click=lambda: st.session_state._bridge.publish(
-        TOPIC_CMD,
-        {"sala": sala, "cocina": cocina, "habitacion": habitacion},
+        TOPIC_CMD, {"sala": sala, "cocina": cocina, "habitacion": habitacion}
     ),
 )
 
-# --- Escenas rápidas ---
 st.write("### 🎛️ Escenas rápidas")
-
 cols = st.columns(4)
+
 def send_scene(payload, label):
     st.session_state._bridge.publish(TOPIC_CMD, payload)
     st.toast(f"Escena enviada: {label}")
 
 if cols[0].button("🌙 Noche", use_container_width=True):
     send_scene(SCENES["noche"], "Noche")
-
 if cols[1].button("🧠 Trabajo", use_container_width=True):
     send_scene(SCENES["trabajo"], "Trabajo")
-
 if cols[2].button("🔆 Todo ON", use_container_width=True):
     send_scene(SCENES["todo_on"], "Todo ON")
-
 if cols[3].button("🌑 Todo OFF", use_container_width=True):
     send_scene(SCENES["todo_off"], "Todo OFF")
 
